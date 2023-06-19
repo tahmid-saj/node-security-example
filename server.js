@@ -73,7 +73,9 @@ passport.authenticate("google", {
 }));
 
 app.get("/auth/logout", (req, res) => {
+    req.logout(); // Removes req.user and clears any logged in session
 
+    return res.redirect("/");
 });
 
 app.use(helmet());
