@@ -31,6 +31,15 @@ function verifyCallback(accessToken, refreshToken, profile, done) {
 
 passport.use(new Strategy({AUTH_OPTIONS}, verifyCallback));
 
+// Save the session to cookie
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+
+// Read the session from the cookie
+passport.deserializeUser((obj, done) => {
+    done(null, obj);
+});
 
 const app = express();
 
@@ -72,6 +81,7 @@ app.use(cookieSession({
 }))
 
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.get("/secret", checkLoggedIn, (req, res) => {
     return res.send("Your personal secret value is 42");
